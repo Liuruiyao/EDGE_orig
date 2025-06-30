@@ -36,18 +36,18 @@ def featurewise_affine(x, scale_shift):
 
 class TransformerEncoderLayer(nn.Module):
     def __init__(
-        self,
-        d_model: int,
-        nhead: int,
-        dim_feedforward: int = 2048,
-        dropout: float = 0.1,
-        activation: Union[str, Callable[[Tensor], Tensor]] = F.relu,
-        layer_norm_eps: float = 1e-5,
-        batch_first: bool = False,
-        norm_first: bool = True,
-        device=None,
-        dtype=None,
-        rotary=None,
+            self,
+            d_model: int,
+            nhead: int,
+            dim_feedforward: int = 2048,
+            dropout: float = 0.1,
+            activation: Union[str, Callable[[Tensor], Tensor]] = F.relu,
+            layer_norm_eps: float = 1e-5,
+            batch_first: bool = False,
+            norm_first: bool = True,
+            device=None,
+            dtype=None,
+            rotary=None,
     ) -> None:
         super().__init__()
         self.self_attn = nn.MultiheadAttention(
@@ -69,10 +69,10 @@ class TransformerEncoderLayer(nn.Module):
         self.use_rotary = rotary is not None
 
     def forward(
-        self,
-        src: Tensor,
-        src_mask: Optional[Tensor] = None,
-        src_key_padding_mask: Optional[Tensor] = None,
+            self,
+            src: Tensor,
+            src_mask: Optional[Tensor] = None,
+            src_key_padding_mask: Optional[Tensor] = None,
     ) -> Tensor:
         x = src
         if self.norm_first:
@@ -86,7 +86,7 @@ class TransformerEncoderLayer(nn.Module):
 
     # self-attention block
     def _sa_block(
-        self, x: Tensor, attn_mask: Optional[Tensor], key_padding_mask: Optional[Tensor]
+            self, x: Tensor, attn_mask: Optional[Tensor], key_padding_mask: Optional[Tensor]
     ) -> Tensor:
         qk = self.rotary.rotate_queries_or_keys(x) if self.use_rotary else x
         x = self.self_attn(
@@ -107,18 +107,18 @@ class TransformerEncoderLayer(nn.Module):
 
 class FiLMTransformerDecoderLayer(nn.Module):
     def __init__(
-        self,
-        d_model: int,
-        nhead: int,
-        dim_feedforward=2048,
-        dropout=0.1,
-        activation=F.relu,
-        layer_norm_eps=1e-5,
-        batch_first=False,
-        norm_first=True,
-        device=None,
-        dtype=None,
-        rotary=None,
+            self,
+            d_model: int,
+            nhead: int,
+            dim_feedforward=2048,
+            dropout=0.1,
+            activation=F.relu,
+            layer_norm_eps=1e-5,
+            batch_first=False,
+            norm_first=True,
+            device=None,
+            dtype=None,
+            rotary=None,
     ):
         super().__init__()
         self.self_attn = nn.MultiheadAttention(
@@ -150,14 +150,14 @@ class FiLMTransformerDecoderLayer(nn.Module):
 
     # x, cond, t
     def forward(
-        self,
-        tgt,
-        memory,
-        t,
-        tgt_mask=None,
-        memory_mask=None,
-        tgt_key_padding_mask=None,
-        memory_key_padding_mask=None,
+            self,
+            tgt,
+            memory,
+            t,
+            tgt_mask=None,
+            memory_mask=None,
+            tgt_key_padding_mask=None,
+            memory_key_padding_mask=None,
     ):
         x = tgt
         if self.norm_first:
@@ -237,18 +237,18 @@ class DecoderLayerStack(nn.Module):
 
 class DanceDecoder(nn.Module):
     def __init__(
-        self,
-        nfeats: int,
-        seq_len: int = 150,  # 5 seconds, 30 fps
-        latent_dim: int = 256,
-        ff_size: int = 1024,
-        num_layers: int = 4,
-        num_heads: int = 4,
-        dropout: float = 0.1,
-        cond_feature_dim: int = 4800,
-        activation: Callable[[Tensor], Tensor] = F.gelu,
-        use_rotary=True,
-        **kwargs
+            self,
+            nfeats: int,
+            seq_len: int = 150,  # 5 seconds, 30 fps
+            latent_dim: int = 256,
+            ff_size: int = 1024,
+            num_layers: int = 4,
+            num_heads: int = 4,
+            dropout: float = 0.1,
+            cond_feature_dim: int = 4800,
+            activation: Callable[[Tensor], Tensor] = F.gelu,
+            use_rotary=True,
+            **kwargs
     ) -> None:
 
         super().__init__()
@@ -273,7 +273,7 @@ class DanceDecoder(nn.Module):
             nn.Mish(),
         )
 
-        self.to_time_cond = nn.Sequential(nn.Linear(latent_dim * 4, latent_dim),)
+        self.to_time_cond = nn.Sequential(nn.Linear(latent_dim * 4, latent_dim), )
 
         self.to_time_tokens = nn.Sequential(
             nn.Linear(latent_dim * 4, latent_dim * 2),  # 2 time tokens
@@ -325,7 +325,7 @@ class DanceDecoder(nn.Module):
             )
 
         self.seqTransDecoder = DecoderLayerStack(decoderstack)
-        
+
         self.final_layer = nn.Linear(latent_dim, output_feats)
 
     def guided_forward(self, x, cond_embed, times, guidance_weight):
@@ -335,7 +335,7 @@ class DanceDecoder(nn.Module):
         return unc + (conditioned - unc) * guidance_weight
 
     def forward(
-        self, x: Tensor, cond_embed: Tensor, times: Tensor, cond_drop_prob: float = 0.0
+            self, x: Tensor, cond_embed: Tensor, times: Tensor, cond_drop_prob: float = 0.0
     ):
         batch_size, device = x.shape[0], x.device
 

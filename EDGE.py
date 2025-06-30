@@ -6,7 +6,7 @@ from pathlib import Path
 
 import torch
 import torch.nn.functional as F
-import wandb
+import swanlab as wandb
 from accelerate import Accelerator, DistributedDataParallelKwargs
 from accelerate.state import AcceleratorState
 from torch.utils.data import DataLoader

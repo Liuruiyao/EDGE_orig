@@ -36,7 +36,7 @@ def parse_opt():
     parser.add_argument(
         "--dataset_folder",
         type=str,
-        default="edge_aistpp",
+        default="/ssd2/wby_data/edge_aistpp",
         help="folder containing motions and music",
     )
     parser.add_argument("--extract-baseline", action="store_true")

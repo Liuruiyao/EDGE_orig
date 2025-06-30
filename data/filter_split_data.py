@@ -27,6 +27,7 @@ def split_data(dataset_path):
                 continue
             motion = f"{dataset_path}/motions/{sequence}.pkl"
             wav = f"{dataset_path}/wavs/{sequence}.wav"
+
             assert os.path.isfile(motion)
             assert os.path.isfile(wav)
             motion_data = pickle.load(open(motion, "rb"))

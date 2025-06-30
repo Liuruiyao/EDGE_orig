@@ -103,8 +103,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--src", help="source path to AIST++ audio files")
-    parser.add_argument("--dest", help="dest path to audio features")
+    parser.add_argument("--src", help="source path to AIST++ audio files",default="/ssd2/wby_data/edge_aistpp/wavs")
+    parser.add_argument("--dest", help="dest path to audio features", default="/ssd2/wby_data/edge_aistpp/extracted_features_baseline")
 
     args = parser.parse_args()
 

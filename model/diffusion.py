@@ -133,6 +133,8 @@ class GaussianDiffusion(nn.Module):
         ## get loss coefficients and initialize objective
         self.loss_fn = F.mse_loss if loss_type == "l2" else F.l1_loss
 
+        print(self)
+
     # ------------------------------------------ sampling ------------------------------------------#
 
     def predict_start_from_noise(self, x_t, t, noise):
@@ -143,10 +145,10 @@ class GaussianDiffusion(nn.Module):
         if self.predict_epsilon:
             return (
                 extract(self.sqrt_recip_alphas_cumprod, t, x_t.shape) * x_t
-                - extract(self.sqrt_recipm1_alphas_cumprod, t, x_t.shape) * noise
             )
         else:
-            return noise
+            return noise                - extract(self.sqrt_recipm1_alphas_cumprod, t, x_t.shape) * noise
+
     
     def predict_noise_from_start(self, x_t, t, x0):
         return (

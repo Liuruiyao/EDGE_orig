@@ -35,6 +35,7 @@ def parse_train_opt():
         help='Log model after every "save_period" epoch',
     )
     parser.add_argument("--ema_interval", type=int, default=1, help="ema every x steps")
+    parser.add_argument('--learning_rate', type=float, default=0.0002, help='Learning rate')
     parser.add_argument(
         "--checkpoint", type=str, default="", help="trained checkpoint path (optional)"
     )
